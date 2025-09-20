@@ -1,0 +1,42 @@
+.header {
+  background: linear-gradient(135deg, #ffffff, #f8fffe);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.header-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 2rem;
+}
+
+.logo h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2d5a27, #4a8540, #5a9650);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  animation: gradientShift 4s ease-in-out infinite;
+  letter-spacing: 1px;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

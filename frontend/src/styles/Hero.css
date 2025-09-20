@@ -1,0 +1,259 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;700&display=swap");
+
+.hero-container {
+  font-family: "Roboto", sans-serif;
+  color: #333;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-main {
+  text-align: center;
+  margin-bottom: 2rem;
+  transform: translateY(30px);
+  animation: slideInUp 1.2s ease-out 0.3s forwards;
+}
+
+@keyframes slideInUp {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.hero-main h4 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.hero-main h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 4rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #2d5a27, #4a8540, #2d5a27);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.hero-main p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.start-learning-btn {
+  background: linear-gradient(135deg, #2d5a27, #4a8540);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(45, 90, 39, 0.3);
+  transform: translateY(0);
+}
+
+.start-learning-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(45, 90, 39, 0.4);
+  background: linear-gradient(135deg, #4a8540, #5a9650);
+}
+
+.start-learning-btn:hover {
+  background-color: #555;
+}
+
+.hero-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  opacity: 1;
+  transform: translateX(0);
+  animation-fill-mode: both;
+}
+
+/* Optional animation - content is visible regardless */
+.hero-details.animate-in {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.what-is-immersion,
+.why-use-immersion {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f9f9f9, #f0f8f0);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.what-is-immersion:hover,
+.why-use-immersion:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.what-is-immersion h2,
+.why-use-immersion h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.what-is-immersion p,
+.why-use-immersion ul {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.why-use-immersion ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.why-use-immersion li {
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.why-use-immersion li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.small-text {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 1rem;
+}
+
+.hero-quote {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  background: linear-gradient(135deg, #f9f9f9, #f0f8f0);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  transform: translateY(0);
+  animation-fill-mode: both;
+  transition: all 0.3s ease;
+}
+
+.hero-quote:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Optional animation - content is visible regardless */
+.hero-quote.animate-in {
+  animation: slideInUp 0.8s ease-out forwards;
+}
+
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quote-content h3 {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.quote-content h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  margin-bottom: 1rem;
+}
+
+.quote-content p {
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.quote-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.author-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0e0;
+  border: 2px solid #2d5a27;
+}
+
+.author-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.quote-author p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .hero-details,
+  .hero-quote {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-main h1 {
+    font-size: 3rem;
+  }
+}
