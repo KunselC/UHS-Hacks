@@ -1,5 +1,5 @@
 
-from text_reader import extract_paragraphs
+from text_reader import extract_paragraphs # from textReader
 from generate_image import replace_text
 
 def main():
