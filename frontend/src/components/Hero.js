@@ -4,7 +4,7 @@ import "../styles/Hero.css";
 const Hero = () => {
   const scrollToCamera = () => {
     console.log("Scroll to camera clicked");
-    const cameraSection = document.getElementById("plant-camera-section");
+    const cameraSection = document.getElementById("camera-section");
     console.log("Camera section found:", cameraSection);
     if (cameraSection) {
       cameraSection.scrollIntoView({
@@ -25,56 +25,54 @@ const Hero = () => {
   return (
     <div className="hero-container">
       <div className="hero-main">
-        <h4>Plant Health & Agricultural Sciences</h4>
+        <h4>Hands-on Learning</h4>
         <h1>REIMAGINED</h1>
         <p>
-          Experiential Learning in Agriculture is Real Learning.
+          Experiential Learning is Real Learning.
           <br />
-          Master plant health diagnostics with AI-powered Immersion.
+          Do it better with Immersion.
         </p>
         <button className="start-learning-btn" onClick={scrollToCamera}>
-          START PLANT DIAGNOSIS
+          START LEARNING
         </button>
       </div>
 
       <div className="hero-details">
         <div className="what-is-immersion">
-          <h2>What is Agricultural Immersion?</h2>
+          <h2>What is Immersion?</h2>
           <p>
-            Immersion is the AI and machine learning-powered agricultural
-            learning platform supporting students and teachers in mastering
-            plant health diagnosis, crop management, and sustainable farming
-            practices through hands-on experience.
+            Immersion is the AI and machine learning-powered learning experience
+            supporting students and teachers of all grade levels in reimagining
+            what learning should be.
           </p>
         </div>
         <div className="why-use-immersion">
-          <h2>Why use Immersion for Plant Health?</h2>
+          <h2>Why should I use Immersion?</h2>
           <ul>
             <li>
-              Up to <strong>91%</strong> improvement in plant disease
-              identification
+              Up to <strong>91%</strong> lower failure rate
             </li>
             <li>
-              Up to <strong>73.6%</strong> better crop yield predictions
+              Up to <strong>73.6%</strong> more students earning A's and B's
             </li>
             <li>
-              <strong>33%</strong> reduction in agricultural knowledge gaps
+              <strong>33%</strong> reduction in achievement gap for
+              underrepresented students
             </li>
           </ul>
           <p className="small-text">
-            Numbers comparing AI-assisted vs traditional agricultural education
+            Numbers comparing experimental and traditional classroom learning
           </p>
         </div>
       </div>
 
       <div className="hero-quote">
         <div className="quote-content">
-          <h3>Agricultural education through</h3>
-          <h2>REAL PLANT ANALYSIS</h2>
+          <h3>Experimental learning is for</h3>
+          <h2>EVERYONE</h2>
           <p>
-            "The future of agriculture depends on students understanding plant
-            health through direct observation, AI analysis, and hands-on
-            experimentation"
+            "An overarching goal of education should be to immerse students in
+            the beauty and inspiration of their surrounding world"
           </p>
         </div>
         <div className="quote-author">
@@ -94,7 +92,7 @@ const Hero = () => {
           <p>
             <strong>Tony Wagner,</strong>
             <br />
-            Expert in Agricultural Innovation at Harvard
+            Expert in Residence at Harvard's Innovation Lab
           </p>
         </div>
       </div>

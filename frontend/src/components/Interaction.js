@@ -80,7 +80,7 @@ const Interaction = () => {
 
   return (
     <div
-      id="plant-camera-section"
+      id="camera-section"
       ref={containerRef}
       className={`interaction-container ${
         containerVisible ? "animate-in" : ""
@@ -157,10 +157,10 @@ const Interaction = () => {
       </div>
       <div className="ai-section">
         <div className="ai-chat">
-          <div className="ai-header">Plant Health AI:</div>
+          <div className="ai-header">Immersion AI:</div>
           <div className="ai-response">
-            Take a photo of your plant to get instant health analysis and
-            diagnostic insights
+            Take a photo to get instant environmental analysis and educational
+            insights
           </div>
           <div className="questions-list">
             {questions.map((q, index) => (
@@ -174,24 +174,24 @@ const Interaction = () => {
               type="text"
               value={currentQuestion}
               onChange={(e) => setCurrentQuestion(e.target.value)}
-              placeholder="Ask about plant diseases, nutrients, or care..."
+              placeholder="Ask about the environment, climate, or natural phenomena..."
               onKeyPress={(e) => e.key === "Enter" && handleAddQuestion()}
             />
-            <button onClick={handleAddQuestion}>Analyze Plant</button>
+            <button onClick={handleAddQuestion}>Analyze Environment</button>
           </div>
         </div>
       </div>
       <div className="insights-section">
         <div className="insights-box">
-          <div className="insights-header">Plant Analysis:</div>
+          <div className="insights-header">Environmental Analysis:</div>
           <div className="insights-content">
             <div className="what-important">
-              <strong>Health Status:</strong> Click "Turn Camera On" and show
-              your plant to get AI diagnosis
+              <strong>Current Conditions:</strong> Click "Turn Camera On" and
+              capture your surroundings to get AI analysis
             </div>
             <div className="why-happening">
-              <strong>Recommendations:</strong> Upload or capture plant images
-              for detailed health insights
+              <strong>Learn More:</strong> Upload or capture images for detailed
+              environmental insights and educational content
             </div>
           </div>
         </div>
