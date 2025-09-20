@@ -1,22 +1,27 @@
 import pytesseract
-from pytesseract import Output
-from PIL import Image, ImageDraw
+from PIL import Image
+from bs4 import BeautifulSoup
 
-# Load your PNG image
-image = Image.open("input.png")
+def extract_paragraphs(image_path: str):
+    """
+    Runs OCR on the given image and returns a list of
+    (bbox, text) tuples, where bbox = (x1, y1, x2, y2).
+    """
+    image = Image.open(image_path)
 
-# Run OCR with bounding box output
-data = pytesseract.image_to_data(image, output_type=Output.DICT)
+    # Get HOCR output (HTML-like)
+    hocr = pytesseract.image_to_pdf_or_hocr(image, extension='hocr')
+    hocr_text = hocr.decode("utf-8")
 
-# Loop through detected text
-for i in range(len(data["text"])):
-    word = data["text"][i]
-    if word.strip():  # skip empty results
-        x, y, w, h = data["left"][i], data["top"][i], data["width"][i], data["height"][i]
-        print(f"Detected: '{word}' at ({x}, {y}, {w}, {h})")
+    # Parse HOCR with BeautifulSoup
+    soup = BeautifulSoup(hocr_text, "html.parser")
+    paragraphs = []
 
-        # Draw rectangle around detected text (optional visualization)
-        draw = ImageDraw.Draw(image)
-        draw.rectangle([x, y, x+w, y+h], outline="red", width=2)
+    for par in soup.find_all("p", class_="ocr_par"):
+        title = par.get("title")
+        if title and "bbox" in title:
+            bbox_str = title.split("bbox")[1].split(";")[0].strip()
+            x1, y1, x2, y2 = map(int, bbox_str.split())
+            paragraphs.append(((x1, y1, x2, y2), par.get_text(strip=True)))
 
-image.show()
+    return paragraphs
