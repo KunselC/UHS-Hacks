@@ -15,6 +15,7 @@ from image_processor import analyze_vegetation_health
 from data_integrator import get_environmental_data
 from risk_engine import calculate_risk
 from database import save_assessment, get_assessment
+from chatLLM import chatLLM
 
 # Optional Celery import
 try:
@@ -46,6 +47,14 @@ class RiskResponse(BaseModel):
     overall_risk_score: float
     risk_category: str
     recommendation: str
+
+class ChatRequest(BaseModel):
+    question: str
+    phi: Optional[float] = 0.5  # Default Plant Health Index
+
+class ChatResponse(BaseModel):
+    response: str
+    phi: float
 
 @app.post("/upload", response_model=UploadResponse)
 async def upload_image_and_location(
@@ -114,6 +123,42 @@ async def get_risk_assessment(assessment_id: str):
     except Exception as e:
         logger.error(f"Error retrieving assessment: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.post("/chat", response_model=ChatResponse)
+async def chat_with_ai(request: ChatRequest):
+    """
+    Chat with the AI about environmental and plant health topics.
+    """
+    try:
+        # Use Victor's chatLLM function
+        ai_response = chatLLM(request.phi, request.question)
+        
+        if not ai_response:
+            raise HTTPException(status_code=500, detail="AI response generation failed")
+        
+        return ChatResponse(response=ai_response, phi=request.phi)
+        
+    except Exception as e:
+        logger.error(f"Error in AI chat: {str(e)}")
+        raise HTTPException(status_code=500, detail="AI chat service error")
+
+@app.post("/upload-image")
+async def upload_image(file: UploadFile = File(...)):
+    """
+    Upload and save image as input.png for ML processing.
+    """
+    try:
+        # Save the uploaded image as input.png in the backend directory
+        file_path = "input.png"
+        with open(file_path, "wb") as buffer:
+            content = await file.read()
+            buffer.write(content)
+        
+        return {"message": "Image saved successfully as input.png", "filename": file_path}
+        
+    except Exception as e:
+        logger.error(f"Error saving image: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to save image")
 
 @app.get("/health")
 async def health_check():

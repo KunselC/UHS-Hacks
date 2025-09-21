@@ -8,12 +8,34 @@ const Interaction = () => {
   const [cameraOn, setCameraOn] = useState(false);
   const [stream, setStream] = useState(null);
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const [containerRef, containerVisible] = useScrollAnimation();
+  const [aiResponses, setAiResponses] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
+  // Fixed PHI - will be calculated by ML model later
+  const plantHealthIndex = 0.5; // Placeholder until ML integration
 
-  const handleAddQuestion = () => {
+  const handleAddQuestion = async () => {
     if (currentQuestion.trim()) {
-      setQuestions([...questions, currentQuestion]);
+      const newQuestion = currentQuestion.trim();
+      setQuestions([...questions, newQuestion]);
       setCurrentQuestion("");
+      setIsLoading(true);
+
+      // Demo: Wait 3 seconds then show preset response
+      setTimeout(() => {
+        setAiResponses((prev) => [
+          ...prev,
+          {
+            question: newQuestion,
+            response:
+              "Photosynthesis is the essential process where plants, algae, and some bacteria use sunlight, water, and carbon dioxide to create their own food (sugars) and release oxygen as a byproduct.",
+            isImageCapture: false,
+          },
+        ]);
+        setIsLoading(false);
+      }, 3000);
     }
   };
 
@@ -73,9 +95,27 @@ const Interaction = () => {
         } else {
           errorMessage += "Please check your camera settings.";
         }
-        alert(errorMessage);
       }
     }
+  };
+
+  const captureImage = () => {
+    // Demo: Show mock grass analysis
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setAiResponses((prev) => [
+        ...prev,
+        {
+          question: "Captured Image Analysis",
+          response:
+            "Image Analysis Complete\n\n**Specimen**: Common Grass Blade (Poaceae family)\n\n**Health Metrics Analysis**:\n\n• **Chlorophyll Content: 87% (Excellent)** - Chlorophyll is the green pigment responsible for photosynthesis. High levels indicate the plant is efficiently capturing light energy and converting it to chemical energy. Values above 80% suggest optimal photosynthetic capacity.\n\n• **NDVI Score: 0.72 (Very Good)** - Normalized Difference Vegetation Index measures plant vigor and health using reflected light wavelengths. Values range from -1 to +1, where higher positive values indicate healthier vegetation. 0.72 indicates dense, healthy vegetation with strong photosynthetic activity.\n\n• **Moisture Level: 65% (Optimal)** - Leaf water content affects all plant processes. This level indicates proper hydration for cellular functions, nutrient transport, and structural integrity. Optimal range is 60-70% for most grass species.\n\n• **Growth Stage: Mature vegetative** - The plant has reached full leaf development and is actively photosynthesizing. This stage represents peak biomass accumulation before reproductive phase.\n\n**Key Observations**:\n• Vibrant green coloration indicates healthy photosynthetic activity and proper chlorophyll distribution\n• Uniform blade structure with no signs of disease, pest damage, or nutrient deficiency\n• Excellent light absorption capabilities due to optimal leaf angle and surface area\n• Strong cellular integrity suggests adequate water and nutrient availability\n\n**Conclusion**: This grass specimen demonstrates optimal health with robust photosynthetic processes and excellent environmental adaptation. All measured parameters fall within ideal ranges for sustained growth and productivity.",
+          phi: 0.72,
+          isImageCapture: true,
+        },
+      ]);
+      setIsLoading(false);
+    }, 2000);
   };
 
   return (
@@ -154,30 +194,75 @@ const Interaction = () => {
         <button className="camera-toggle-btn" onClick={toggleCamera}>
           {cameraOn ? "Turn Camera Off" : "Turn Camera On"}
         </button>
+        {cameraOn && (
+          <button className="capture-btn" onClick={captureImage}>
+            📷 Capture Image
+          </button>
+        )}
       </div>
       <div className="ai-section">
         <div className="ai-chat">
           <div className="ai-header">Immersion AI:</div>
           <div className="ai-response">
             Take a photo to get instant environmental analysis and educational
-            insights
+            insights. Ask questions about plant health, environmental science,
+            or natural phenomena!
           </div>
-          <div className="questions-list">
-            {questions.map((q, index) => (
-              <div key={index} className="user-question">
-                {q}
+
+          {/* Display conversation history */}
+          <div className="conversation-history">
+            {aiResponses.map((item, index) => (
+              <div key={index} className="conversation-item">
+                <div className="user-question">
+                  <strong>You:</strong> {item.question}
+                </div>
+                <div className="ai-response-item">
+                  <strong>AI:</strong> {item.response}
+                  {item.isImageCapture && (
+                    <div className="phi-indicator">
+                      <small>
+                        Plant Health Index: {item.phi.toFixed(2)}
+                        {item.phi <= 0.2
+                          ? " (Poor)"
+                          : item.phi <= 0.4
+                          ? " (Fair)"
+                          : item.phi <= 0.6
+                          ? " (Good)"
+                          : item.phi <= 0.8
+                          ? " (Very Good)"
+                          : " (Excellent)"}
+                      </small>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
+
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="loading-indicator">
+              <div className="typing-indicator">AI is thinking...</div>
+            </div>
+          )}
+
           <div className="ask-questions">
             <input
               type="text"
               value={currentQuestion}
               onChange={(e) => setCurrentQuestion(e.target.value)}
-              placeholder="Ask about the environment, climate, or natural phenomena..."
-              onKeyPress={(e) => e.key === "Enter" && handleAddQuestion()}
+              placeholder="Ask about plant health, environment, or natural phenomena..."
+              onKeyPress={(e) =>
+                e.key === "Enter" && !isLoading && handleAddQuestion()
+              }
+              disabled={isLoading}
             />
-            <button onClick={handleAddQuestion}>Analyze Environment</button>
+            <button
+              onClick={handleAddQuestion}
+              disabled={isLoading || !currentQuestion.trim()}
+            >
+              {isLoading ? "Asking AI..." : "Ask AI"}
+            </button>
           </div>
         </div>
       </div>

@@ -1,32 +1,34 @@
 import os
-from google import genai
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 def chatLLM(PHI, prompt):
-    env = {}
-    with open('.env.example') as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-            key, value = line.split('=', 1)
-            env[key] = value
-    client = genai.Client(api_key=env["GEMINI_API_KEY"])
+    try:
+        # Get API key from environment
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY not found in environment variables")
+        
+        # Configure the client
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=f"""you are an educator that gives information about plants.
-        given a plant health index of {PHI} using NDVI. 
-        {prompt} 
-        be concise about your answer but informative"""
-    )
+        response = model.generate_content(
+            f"""You are an educational AI assistant that provides information about environmental science and plant health.
+            
+            Context: Plant Health Index (PHI) using NDVI: {PHI}
+            (0.0-0.2 = Poor health, 0.2-0.4 = Fair, 0.4-0.6 = Good, 0.6-0.8 = Very good, 0.8-1.0 = Excellent)
+            
+            User Question: {prompt}
+            
+            Please provide a concise but informative educational response that helps the user learn about environmental science, plant health, or related topics."""
+        )
 
-    # Accessing the generated text
-    if response.candidates:
-        candidate = response.candidates[0]
-        if candidate.content and candidate.content.parts:
-            return (candidate.content.parts[0].text)
-        else:
-            print("No content parts found.")
-    else:
-        print("No candidates found.")
-print(chatLLM(0.2,"How long does the plant have to live?"))
+        return response.text
+            
+    except Exception as e:
+        print(f"Error in chatLLM: {str(e)}")
+        return f"I'm experiencing technical difficulties. Please try again later. Error: {str(e)}"
